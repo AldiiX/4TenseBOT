@@ -3,3 +3,4 @@ node_modules/
 forme.txt
 package-lock.json
 json.sqlite
+.env
