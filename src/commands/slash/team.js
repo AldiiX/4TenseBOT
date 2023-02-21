@@ -19,10 +19,12 @@ module.exports = {
         const team = await db.get("web_api.members");
         const embed = new EmbedBuilder();
 
-        let targetUser = interaction.options.getString("clen") ?? null;
+        let targetUser = interaction.options.getString("clen").toLowerCase() ?? null;
         if(targetUser) {
             const arr = [];
             for(let m of team) if(!m.hidden) arr.push(m.name.toLowerCase());
+
+            if(targetUser == "fofo" || targetUser == "fofo 23") targetUser = "fofo23";
             if(!arr.includes(targetUser)) targetUser = null;
         }
 
@@ -34,7 +36,9 @@ module.exports = {
             embed.setTitle("**NÁŠ TÝM**")
             .setThumbnail('https://4tense.cz/images/logo.webp')
             .setDescription(`V našem týmu je momentálně **${memberCount} členů**.\n\u200b`)
-            .setURL("https://www.4tense.cz/#team");
+            .setURL("https://www.4tense.cz/#team")
+            .setColor(config.color);
+
     
             for(let member of team) {
                 if(member.hidden) continue;
@@ -53,12 +57,12 @@ module.exports = {
             embed.setTitle(`**${member.name.toUpperCase()}**   (${member.funkce[0].name})`)
             .setDescription(member.about)
             .setThumbnail(`https://www.4tense.cz/images/avatars/aldiix.png`)
-            .setURL("https://www.4tense.cz/#team");
+            .setURL("https://www.4tense.cz/#team")
+            .setColor(member.accentColor.dark);
         }
         
         
         
-        embed.setColor(config.color)
         embed.setFooter({ text: "www.4tense.cz", iconURL: 'https://4tense.cz/images/logo.webp'});
         interaction.reply({ embeds: [embed] });
     },
