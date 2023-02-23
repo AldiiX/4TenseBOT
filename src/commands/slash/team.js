@@ -19,7 +19,7 @@ module.exports = {
         const team = await db.get("web_api.members");
         const embed = new EmbedBuilder();
 
-        let targetUser = interaction.options.getString("clen").toLowerCase() ?? null;
+        let targetUser = String(interaction.options.getString("clen")).toLowerCase() ?? null;
         if(targetUser) {
             const arr = [];
             for(let m of team) if(!m.hidden) arr.push(m.name.toLowerCase());
