@@ -6,7 +6,7 @@ const db = new QuickDB();
 
 
 module.exports = {
-    adminOnly: true,
+    adminOnly: false,
     data: new SlashCommandBuilder()
         .setName("zajimavost")
         .setDescription("Pošlu náhodnou zajímavost o 4Tense."),
