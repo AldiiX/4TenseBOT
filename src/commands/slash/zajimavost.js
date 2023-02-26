@@ -31,35 +31,35 @@ module.exports = {
 
 
 
-        const filterPrimaryRow = i => i.customId === 'primary';
-        const filterEndRow = i => i.customId === 'end';
-        const collectorPrimaryRow = interaction.channel.createMessageComponentCollector({ filter: filterPrimaryRow, time: 300 * 1000 });
-        const collectorEndRow = interaction.channel.createMessageComponentCollector({ filter: filterEndRow, time: 300 * 1000 });
+        // const filterPrimaryRow = i => i.customId === 'primary';
+        // const filterEndRow = i => i.customId === 'end';
+        // const collectorPrimaryRow = interaction.channel.createMessageComponentCollector({ filter: filterPrimaryRow, time: 300 * 1000 });
+        // const collectorEndRow = interaction.channel.createMessageComponentCollector({ filter: filterEndRow, time: 300 * 1000 });
 
 
 
 
-        collectorPrimaryRow.on('collect', async i => {
-            generateZajimavost();
-            await i.update({ embeds: [embed] });
-        });
+        // collectorPrimaryRow.on('collect', async i => {
+        //     generateZajimavost();
+        //     await i.update({ embeds: [embed] });
+        // });
 
-        collectorPrimaryRow.on('end', async collected => {
-            await interaction.editReply({ embeds: [embed], components: [rowDisabled()] });
-        });
+        // collectorPrimaryRow.on('end', async collected => {
+        //     await interaction.editReply({ embeds: [embed], components: [rowDisabled()] });
+        // });
 
-        collectorEndRow.on('collect', async i => {
-            await interaction.editReply({ embeds: [embed], components: [rowDisabled()] });
-        });
+        // collectorEndRow.on('collect', async i => {
+        //     await interaction.editReply({ embeds: [embed], components: [rowDisabled()] });
+        // });
 
-        collectorEndRow.on('end', async collected => {
-            await interaction.editReply({ embeds: [embed], components: [rowDisabled()] });
-        });
+        // collectorEndRow.on('end', async collected => {
+        //     await interaction.editReply({ embeds: [embed], components: [rowDisabled()] });
+        // });
 
 
 
         
         generateZajimavost();
-        await interaction.reply({ embeds: [embed], components: [row, endRow]})
+        await interaction.reply({ embeds: [embed]/*, components: [row, endRow]*/})
     },
 };

@@ -13,6 +13,7 @@ module.exports = {
         .addStringOption(option => 
             option.setName('message')
             .setDescription('zpráva, kterou odešlu do chatu')
+            .setRequired(true)
         ),
     run: async (client, interaction) => {
         const msg = interaction.options.getString("message") ?? " ";

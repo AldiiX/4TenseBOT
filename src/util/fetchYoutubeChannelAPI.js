@@ -13,7 +13,7 @@ module.exports = {
         const webApi = (await axios.get(`${new URL('https://api.npoint.io/22bfa01f4bf8ffb4fe3d')}`, { params: { answer: 42 }})).data;
         
         const date = new Date();
-        const today = [date.toLocaleDateString('cs-CS', { year:"numeric", month:"short", day:"numeric" }), `${date.getHours()}:${date.getMinutes()}` ]
+        const today = [date.toLocaleDateString('cs-CS', { year:"numeric", month:"short", day:"numeric", timeZone: "Europe/Prague" }), date.toLocaleString('cs-CS', { minute: "2-digit", hour: "2-digit" ,timeZone: "Europe/Prague" }) ]
 
         await db.set("last_fetch", today);
         await db.set("youtube_channel_stats", youtubeChannelStats);
