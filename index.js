@@ -7,7 +7,7 @@ const { readdirSync } = require("fs");
 const moment = require("moment");
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
-const {log} = require("./src/util/utilfunctions");
+const { log } = require("./src/util/utilfunctions");
 const { QuickDB } = require("quick.db");
 const db = new QuickDB();
 
