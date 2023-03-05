@@ -21,7 +21,7 @@ module.exports = {
             slashcommands.push(el.name)
         });
 
-        const row1 = new ActionRowBuilder().addComponents(new ButtonBuilder().setLabel('Web').setStyle(ButtonStyle.Link).setURL("https://www.4tense.cz")).addComponents(new ButtonBuilder().setLabel('YouTube kanál').setStyle(ButtonStyle.Link).setURL("https://www.youtube.com/@4Tense"));;
+        const row1 = new ActionRowBuilder().addComponents(new ButtonBuilder().setLabel('Web').setStyle(ButtonStyle.Link).setURL("https://www.4tense.cz")).addComponents(new ButtonBuilder().setLabel('YouTube kanál').setStyle(ButtonStyle.Link).setURL("https://www.youtube.com/@4Tense"));
 
         const embed = new EmbedBuilder()
         .setTitle("⭐ **__HELP__**")

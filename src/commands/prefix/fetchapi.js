@@ -1,6 +1,6 @@
 const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 const { log } = require("../../util/utilfunctions");
-const { fetchApi } = require("../../util/fetchYoutubeChannelAPI");
+const { fetchApi } = require("../../util/fetchapi");
 
 module.exports = {
     name: "fetchapi",

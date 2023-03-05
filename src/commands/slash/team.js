@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField, CommandInteractionOptionResolver } = require("discord.js");
+const { EmbedBuilder, AttachmentBuilder } = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const config = require("../../config");
 const { QuickDB } = require("quick.db");
@@ -16,6 +16,7 @@ module.exports = {
         ),
     run: async (client, interaction) => {
             
+        let memberAvatar;
         const team = await db.get("web_api.members");
         const embed = new EmbedBuilder();
 
@@ -44,26 +45,31 @@ module.exports = {
                 if(member.hidden) continue;
     
                 embed.addFields({ name: member.name, value: member.about + "\n\u200b" })
-            }
+            };
+
+            embed.setFooter({ text: "www.4tense.cz", iconURL: 'https://4tense.cz/images/logo.webp'});
+            interaction.reply({ embeds: [embed] })
         } else {
 
+            await interaction.deferReply();
             let index;
             index = team.findIndex(function(object) {
                 return object.name.toLowerCase() == targetUser ?? null;
             });
 
             const member = team[index];
+            try { memberAvatar = new AttachmentBuilder(`https://4tense.cz/${member.avatar}`) } catch {};
 
             embed.setTitle(`**${member.name.toUpperCase()}**   (${member.funkce[0].name})`)
             .setDescription(member.about)
-            .setThumbnail(`https://www.4tense.cz/images/avatars/aldiix.png`)
+            .setThumbnail(`attachment://${member.name.toLowerCase()}.webp`)
             .setURL("https://www.4tense.cz/#team")
-            .setColor(member.accentColor.dark);
+            .setColor(member.accentColor.dark)
+            .setFooter({ text: "www.4tense.cz", iconURL: 'https://4tense.cz/images/logo.webp'});
+            await interaction.editReply({ embeds: [embed], files: [memberAvatar] })
         }
         
         
         
-        embed.setFooter({ text: "www.4tense.cz", iconURL: 'https://4tense.cz/images/logo.webp'});
-        interaction.reply({ embeds: [embed] });
     },
 };

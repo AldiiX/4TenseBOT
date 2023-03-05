@@ -17,13 +17,13 @@ module.exports = {
 				
 				if(command.adminOnly == true && !config.developers.includes(interaction.user.id)) {
 					log(`${interaction.user.tag} zkusil použít /${interaction.commandName} v channelu ${interaction.channel.name} na serveru ${interaction.guild.name}. Nemá ale perms ¯\­_(ツ)_/¯`, "warn");
-					return interaction.reply({ content: `This command is only for bot developers.`, ephemeral: true});
+					return interaction.reply({ content: `Tento příkaz můžou použít pouze developeři 4TenseBOTa.`, ephemeral: true});
 				};
 				
 				command.run(client, interaction);
 				log(`${interaction.user.tag} použil /${interaction.commandName} v channelu ${interaction.channel.name} na serveru ${interaction.guild.name}`, "announcement");
 			} catch (err) {
-				interaction.reply({ content: `A problem was encountered while executing the command! Please try again.`, ephemeral: true});
+				interaction.reply({ content: `Při provádění příkazu došlo k problému.`, ephemeral: true});
 				log(`${interaction.user.tag} zkusil použít /${interaction.commandName} v channelu ${interaction.channel.name} na serveru ${interaction.guild.name}\	n`, "error");
 				log(err, "error");
 			}
