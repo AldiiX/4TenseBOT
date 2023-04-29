@@ -4,3 +4,5 @@ forme.txt
 package-lock.json
 json.sqlite
 .env
+logs/
+cmds.txt
