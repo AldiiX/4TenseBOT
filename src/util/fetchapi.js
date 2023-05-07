@@ -25,9 +25,11 @@ module.exports = {
         const lastFetch = (await db.get("last_fetch"))[1];
         
         // nastavení 4tense voice kanálu na počet subů
-        client.channels.fetch("1078403689364066324").then(channel => channel.setName(`Počet subů: ${stats.subscriberCount}`));
-        client.channels.fetch("1078408841890381895").then(channel => channel.setName(`Počet views: ${stats.viewCount}`));
-        client.channels.fetch("1078670676006809620").then(channel => channel.setName(`Poslední fetch: ${lastFetch}`));
+        if(config.testing == false) {
+            client.channels.fetch("1078403689364066324").then(channel => channel.setName(`Počet subů: ${stats.subscriberCount}`));
+            client.channels.fetch("1078408841890381895").then(channel => channel.setName(`Počet views: ${stats.viewCount}`));
+            client.channels.fetch("1078670676006809620").then(channel => channel.setName(`Poslední fetch: ${lastFetch}`));
+        }
 
         client.user.setActivity({ name: `${stats.subscriberCount} subů, ${stats.videoCount} videí :)`, type: ActivityType.Playing });
 
