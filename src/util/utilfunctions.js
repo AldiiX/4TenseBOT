@@ -1,4 +1,4 @@
-const moment = require("moment")
+const moment = require("moment-timezone")
 
 module.exports = {
     log: (message, type) => {
@@ -10,6 +10,6 @@ module.exports = {
             announcement: "\x1b[36m"
         };
 
-        console.log(`${type ? types[type] : ""} [${moment().format("DD/MM/YYYY HH:mm:ss")}] ${message}\x1b[0m`);
+        console.log(`${type ? types[type] : ""} [${moment().tz('Europe/Prague').format("DD/MM/YYYY HH:mm:ss")}] ${message}\x1b[0m`);
     }
 }
