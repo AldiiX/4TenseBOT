@@ -1,8 +1,9 @@
-const { EmbedBuilder, AttachmentBuilder } = require("discord.js");
+const { EmbedBuilder, AttachmentBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const config = require("../../config");
 const { QuickDB } = require("quick.db");
 const db = new QuickDB();
+
 
 
 module.exports = {
@@ -19,13 +20,16 @@ module.exports = {
         let memberAvatar;
         const team = await db.get("web_api.members");
         const embed = new EmbedBuilder();
-
         let targetUser = String(interaction.options.getString("clen")).toLowerCase() ?? null;
+
+
+
         if(targetUser) {
             const arr = [];
             for(let m of team) if(!m.hidden) arr.push(m.name.toLowerCase());
 
             if(targetUser == "fofo" || targetUser == "fofo 23") targetUser = "fofo23";
+            if(targetUser == "adrevenue" || targetUser == "slippercrx") targetUser = "steroine";
             if(!arr.includes(targetUser)) targetUser = null;
         }
 
@@ -49,27 +53,30 @@ module.exports = {
 
             embed.setFooter({ text: "www.4tense.cz", iconURL: 'https://4tense.cz/images/logo.webp'});
             interaction.reply({ embeds: [embed] })
-        } else {
 
-            await interaction.deferReply();
-            let index;
-            index = team.findIndex(function(object) {
-                return object.name.toLowerCase() == targetUser ?? null;
-            });
-
-            const member = team[index];
-            try { memberAvatar = new AttachmentBuilder(`https://4tense.cz/${member.avatar}`) } catch {};
-
-            embed.setTitle(`**${member.name.toUpperCase()}**   (${member.funkce[0].name})`)
-            .setDescription(member.about)
-            .setThumbnail(`attachment://${member.name.toLowerCase()}.webp`)
-            .setURL("https://www.4tense.cz/#team")
-            .setColor(member.accentColor.dark)
-            .setFooter({ text: "www.4tense.cz", iconURL: 'https://4tense.cz/images/logo.webp'});
-            await interaction.editReply({ embeds: [embed], files: [memberAvatar] })
+            return;
         }
+
+
+
+        await interaction.deferReply();
         
-        
-        
+        let index;
+        index = team.findIndex(function(object) {
+            return object.name.toLowerCase() == targetUser ?? null;
+        });
+
+        const member = team[index];
+        const row = new ActionRowBuilder().addComponents(new ButtonBuilder().setLabel('Profil').setStyle(ButtonStyle.Link).setURL(`https://www.4tense.cz/@${member.name}`));
+        try { memberAvatar = new AttachmentBuilder(`https://4tense.cz/${member.avatar}`) } catch {};
+
+        embed.setTitle(`**${member.name.toUpperCase()}**   (${member.funkce[0].name})`)
+        .setDescription(member.about)
+        .setThumbnail(`attachment://${member.name.toLowerCase()}.webp`)
+        .setURL(`https://www.4tense.cz/@${member.name}`)
+        .setColor(member.accentColor.dark)
+        .setFooter({ text: "www.4tense.cz", iconURL: 'https://4tense.cz/images/logo.webp'});
+
+        await interaction.editReply({ embeds: [embed], files: [memberAvatar], components: [row] })
     },
 };

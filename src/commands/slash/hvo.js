@@ -28,7 +28,14 @@ module.exports = {
         let row = new ActionRowBuilder().addComponents(new ButtonBuilder().setLabel('Web').setStyle(ButtonStyle.Link).setURL("https://www.4tense.cz")).addComponents(new ButtonBuilder().setLabel('YouTube kanál').setStyle(ButtonStyle.Link).setURL("https://www.youtube.com/@4Tense"));
         const embed = new EmbedBuilder().setColor("White");
         const heroes = await db.get("web_api.hvoHeroes");
-        const heroImgPathEndName = (heroname) => { return `${String(heroname).toLowerCase().replace(/ /g, "_")}.webp` };
+        const heroImgPathEndName = (heroname) => { 
+            switch(heroname.toLowerCase()) {
+                case "wrecking ball" : heroname = "wb"; break;
+                case "torbjörn" : heroname = "torb"; break;
+            }
+
+            return `${String(heroname).toLowerCase().replace(/ /g, "").replace(/ú/g, 'u').replace(/ö/g, 'o') }.webp`
+        };
 
 
         switch(interaction.options.getSubcommand()) {
@@ -39,15 +46,46 @@ module.exports = {
                 const heroesNames = [];
                 const heroesNamesToLowerCase = [];
                 let input = String(interaction.options.getString("hrdina"));
+
+                // hero aliasy
+                switch(input) {
+                    case "lucio":
+                    case "lůcio": input = "lúcio"; break;
+
+                    case "dva": input = "d.va"; break;
+
+                    case "soldier76":
+                    case "soldier":
+                    case "soldier 76": input = "soldier: 76"; break;
+
+                    case "torbjorn":
+                    case "torb": input = "torbjörn"; break;
+
+                    case "wreckingball":
+                    case "hammond": 
+                    case "wb":
+                    case "ball": input = "wrecking ball"; break;
+
+                    case "mccree": input = "cassidy"; break;
+                }
                 
                 for(let hero of heroes) {
                     heroesNamesToLowerCase.push(hero.name.toLowerCase());
                     heroesNames.push(hero.name);
                 }
+
                 heroesNames.sort();
 
                 if(!heroesNamesToLowerCase.includes(input.toLowerCase())) {
-                    return interaction.reply({ content: `Hrdina \`${input}\` neexistuje.\n\nList hrdinů: \`${heroesNames.join(", ")}\`.`, ephemeral: true });
+                    return await interaction.editReply({ 
+                        embeds: [
+                            new EmbedBuilder()
+                            .setTitle(`**Hrdina \`${input}\` neexistuje.**`)
+                            .setDescription(`\u200b\n**List hrdinů:**\n\`${heroesNames.join(", ")}\`.`)
+                            .setColor("Red")
+                        ],
+                        ephemeral: true 
+                    });
                 }
 
 
@@ -61,7 +99,7 @@ module.exports = {
                     embed.setDescription(`Tento hrdina ještě nebyl natočený.`);
                 }
                 
-                if(hero.inProgress == true) {
+                if(hero.inProgress == true && hero.played == false) {
                     embed.setColor("Yellow");
                     embed.setDescription("Pracujeme na tom, epizoda již brzy na YouTube :)")
                 }
@@ -82,7 +120,17 @@ module.exports = {
                 await interaction.deferReply();
                 let input = String(interaction.options.getInteger("epizoda"));
 
-                if(input < 1 || input > heroes.length) return interaction.reply({ content: `Zadané číslo \`${input}\` neodpovídá počtu hrdinů. Zadej prosím číslo od \`1\` do \`${heroes.length}\`.`, ephemeral: true});
+                if(input < 1 || input > heroes.length) {
+                    return await interaction.editReply({ 
+                        embeds: [
+                            new EmbedBuilder()
+                            .setTitle(`Zadané číslo \`${input}\` neodpovídá počtu hrdinů.`)
+                            .setDescription(`Zadej prosím číslo od \`1\` do \`${heroes.length}\`.`)
+                            .setColor("Red")
+                        ],
+                        ephemeral: true
+                    });
+                }
 
                 const hero = heroes.find(x => { return x.episode == input }) ?? "unknown";
 

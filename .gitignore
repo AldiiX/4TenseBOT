@@ -2,6 +2,7 @@ src/config.js
 node_modules/
 forme.txt
 package-lock.json
+package.json
 json.sqlite
 .env
 logs/
